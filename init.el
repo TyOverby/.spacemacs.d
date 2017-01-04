@@ -249,7 +249,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers "relative"
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -290,6 +290,9 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq-default
+   linum-format "%4d \u2502"
+   linum-relative-format "%4s \u2502 ")
   )
 
 (defun dotspacemacs/user-config ()
@@ -299,6 +302,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  (linum-relative-mode)
 
   ;; HELM-MINI
   (define-key evil-normal-state-map (kbd "C-SPC") 'helm-mini)
