@@ -335,13 +335,24 @@ you should place your code here."
   ;; Rust
   (add-hook 'racer-mode-hook #'eldoc-mode)
 
+  ;; Decide if you should insert a TAB or perform autocomplete based
+  ;; off of the contents of the line up to your cursor.
+  (defun indent-or-autocomplete()
+    (interactive)
+    (let* ((start-of-line (line-beginning-position))
+           (cursor-position (point))
+           (text (buffer-substring-no-properties start-of-line cursor-position))
+           (all-whitespace (string-match-p "^\\s-*$" text)))
+      (if all-whitespace
+        (indent-for-tab-command)
+        (company-complete))))
+
   ;; Autocomplete
-  (define-key evil-insert-state-map (kbd "TAB") 'company-complete)
+  (define-key evil-insert-state-map (kbd "TAB") 'indent-or-autocomplete)
   (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete)
 
   ;; Flycheck
   (defalias 'copen 'flycheck-list-errors)
-  (defalias 'cclose '(kill-buffer "*Flycheck errors*"))
 )
 
 
